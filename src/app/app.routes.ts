@@ -16,7 +16,7 @@ export const routes: Routes = [
   { 
     path: 'architect/review/:attempt_id', 
     component: ArchitectReviewComponent, 
-    canActivate: [authGuard, roleGuard(['Architect'])] 
+    canActivate: [authGuard, roleGuard(['Architect', 'System Designer'])] 
   },
   { 
     path: 'architect/builder', 

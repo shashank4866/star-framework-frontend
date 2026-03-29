@@ -97,16 +97,22 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   loadSnapshot() {
+    // Restore end_time from sessionStorage if the user refreshes mid-exam.
+    // It is written by startAssessment() on the dashboard before navigating here.
+    const storedEnd = sessionStorage.getItem(`attempt_end_${this.attemptId}`);
+    if (storedEnd) {
+      this.endTime = new Date(storedEnd);
+    } else {
+      // Fallback: 30-min window (handles direct URL navigation without starting via dashboard)
+      this.endTime = new Date(new Date().getTime() + 30 * 60000);
+    }
+
     this.assessmentSvc.getSnapshot(this.attemptId!).subscribe({
         next: (data: any) => {
-            // Note: End time and start time should be passed in via parent or fetched via distinct API if needed,
-            // Assuming we got endtime from a generic store, or we hard set 30 min for demo. 
-            // In a real app we'd fetch attempt metadata first.
-            this.endTime = new Date(new Date().getTime() + 30 * 60000); 
             this.questions.set(data);
             this.startTimer();
         },
-        error: (err) => alert('Failed to load assessment snapshot or timer expired!')
+        error: () => alert('Failed to load assessment snapshot or timer expired!')
     });
   }
 

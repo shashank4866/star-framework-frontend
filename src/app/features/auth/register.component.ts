@@ -28,9 +28,8 @@ import { AuthService } from '../../core/services/auth.service';
           <div class="form-group">
             <label>Desired Application Role</label>
             <select name="role_name" [(ngModel)]="userData.role_name">
-              <option value="System Designer">System Designer</option>
               <option value="System Engineer">System Engineer</option>
-              <option value="Architect">Architect</option>
+              <option value="System Designer">System Designer</option>
             </select>
           </div>
           <div class="text-danger mb-4" *ngIf="errorMessage">{{errorMessage}}</div>
@@ -44,7 +43,7 @@ import { AuthService } from '../../core/services/auth.service';
   `
 })
 export class RegisterComponent {
-  userData = { name: '', email: '', password: '', role_name: 'System Designer' };
+  userData = { name: '', email: '', password: '', role_name: 'System Engineer' };
   errorMessage = '';
 
   constructor(private auth: AuthService, private router: Router) {}
