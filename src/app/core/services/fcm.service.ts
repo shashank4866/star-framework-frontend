@@ -79,20 +79,32 @@ export class FcmService {
   }
 
   requestPermission() {
+    console.log('[FCM] Requesting browser notification permission...');
     Notification.requestPermission().then((permission) => {
+      console.log('[FCM] Permission Status:', permission);
       if (permission === 'granted') {
         
         // Eagerly sync Postgres offline history upon granted session boot!
         this.syncHistory();
 
+        console.log('[FCM] Attempting to generate registration token...');
         // [SUCCESS]: Utilizing explicit Firebase VAPID Web Push Key provided by candidate architecture natively!
         getToken(this.messaging, { vapidKey: 'BOMfvHsjgttyDmOd2taRnZyCjQ3ae8WAuZX0O7olPM_P4UXGgqvnypQNXnjl2Kc3wR-B4bSrusMRhxzV38oOO6g' }).then((token) => {
            if(token) {
-              this.http.post(`${this.apiUrl}/register`, { token }, { withCredentials: true }).subscribe();
+              console.log('[FCM] Token Generated:', token.substring(0, 10), '...');
+              this.http.post(`${this.apiUrl}/register`, { token }, { withCredentials: true }).subscribe({
+                next: () => console.log('[FCM] Token securely registered with backend.'),
+                error: (err) => console.error('[FCM] Backend registration failed:', err.message)
+              });
+           } else {
+              console.warn('[FCM] No token available. User might have blocked permissions.');
            }
         }).catch(err => {
+            console.error('[FCM] Token generation error:', err.message);
             console.warn('FCM Token generation warned (missing VAPID config in UI). Proceeding seamlessly tracking pure Postgres + IndexedDB persistence offline instead!', err);
         });
+      } else {
+        console.warn('[FCM] Notification permission denied by user.');
       }
     });
   }

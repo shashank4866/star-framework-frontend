@@ -13,10 +13,11 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  const notificationTitle = payload.notification.title;
+  console.log('[FCM-SW] Background Message received:', payload);
+  const notificationTitle = payload.notification?.title || 'LMS Notification';
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/favicon.ico'
+    body: payload.notification?.body || 'New update available!',
+    icon: '/favicon.png'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
