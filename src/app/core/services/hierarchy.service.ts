@@ -10,18 +10,18 @@ export class HierarchyService {
   constructor(private http: HttpClient) {}
 
   getPowers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/powers`);
+    return this.http.get<any[]>(`${this.apiUrl}/powers`, { withCredentials: true });
   }
 
   getCapabilities(powerId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/powers/${powerId}/capabilities`);
+    return this.http.get<any[]>(`${this.apiUrl}/powers/${powerId}/capabilities`, { withCredentials: true });
   }
 
   getTasks(capabilityId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/capabilities/${capabilityId}/tasks`);
+    return this.http.get<any[]>(`${this.apiUrl}/capabilities/${capabilityId}/tasks`, { withCredentials: true });
   }
 
   getSubtasks(taskId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/tasks/${taskId}/subtasks`);
+    return this.http.get<any[]>(`${this.apiUrl}/tasks/${taskId}/subtasks`, { withCredentials: true });
   }
 }

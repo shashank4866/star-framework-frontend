@@ -12,22 +12,22 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: any) {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
       tap((res: any) => this.currentUser.set(res.user))
     );
   }
 
   register(data: any) {
-    return this.http.post<any>(`${this.apiUrl}/register`, data);
+    return this.http.post<any>(`${this.apiUrl}/register`, data, { withCredentials: true });
   }
 
   logout() {
-    return this.http.post(`${this.apiUrl}/logout`, {})
+    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
       .pipe(tap(() => this.currentUser.set(null)));
   }
 
   checkAuth() {
-    return this.http.get<any>(`${this.apiUrl}/me`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
       tap((user) => this.currentUser.set(user)),
       catchError(() => {
         this.currentUser.set(null);

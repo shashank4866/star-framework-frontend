@@ -9,17 +9,17 @@ export class ArchitectService {
   constructor(private http: HttpClient) {}
 
   getAttemptReplay(attemptId: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/attempt/${attemptId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/attempt/${attemptId}`, { withCredentials: true });
   }
 
   getPendingReviews() {
-    return this.http.get<any[]>(`${this.apiUrl}/pending`);
+    return this.http.get<any[]>(`${this.apiUrl}/pending`, { withCredentials: true });
   }
 
   submitEvaluation(attemptId: string, evaluations: any[], overallFeedback: string) {
     return this.http.post(`${this.apiUrl}/attempt/${attemptId}/evaluate`, { 
         evaluations, 
         overall_feedback: overallFeedback 
-    });
+    }, { withCredentials: true });
   }
 }
