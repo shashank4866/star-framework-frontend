@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-backend-api.com/api'
+  apiUrl: 'https://star-framework-backend.onrender.com/api'
 };
