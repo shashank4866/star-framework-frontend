@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-course-builder',
@@ -138,7 +139,7 @@ import { Router } from '@angular/router';
   `
 })
 export class CourseBuilderComponent implements OnInit {
-  apiUrl = 'http://localhost:3000/api/builder';
+  apiUrl = `${environment.apiUrl}/builder`;
   
   levels = signal<any[]>([]);
   selectedLevel: any = null;

@@ -12,11 +12,13 @@ const firebaseConfig = {
   appId: "1:546938487296:web:0b7cb06338df8929f28ee5"
 };
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class FcmService {
-  private apiUrl = 'http://localhost:3000/api/fcm';
+  private apiUrl = `${environment.apiUrl}/fcm`;
   private messaging;
   public toastMessage = signal<any>(null);
   public notificationsHistory = signal<any[]>([]);

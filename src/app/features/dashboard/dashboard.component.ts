@@ -6,6 +6,7 @@ import { ArchitectService } from '../architect/architect.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -272,14 +273,14 @@ export class DashboardComponent implements OnInit {
           error: () => console.error('Failed fetching Architect Queue')
        });
 
-       this.http.get<any[]>('http://localhost:3000/api/architect/users', { withCredentials: true }).subscribe({
+       this.http.get<any[]>(`${environment.apiUrl}/architect/users`, { withCredentials: true }).subscribe({
           next: (res) => this.globalUsers.set(res),
           error: (err) => console.error('Failed fetching Global Users', err)
        });
     }
 
     if (currentUser?.roleName === 'Trainee') {
-       this.http.get<any[]>('http://localhost:3000/api/progress/badges', { withCredentials: true }).subscribe({
+       this.http.get<any[]>(`${environment.apiUrl}/progress/badges`, { withCredentials: true }).subscribe({
           next: (res) => this.myBadges.set(res),
           error: (err) => console.error('Failed fetching badges', err)
        });
@@ -324,7 +325,7 @@ export class DashboardComponent implements OnInit {
   }
 
   viewBadgeProgress(attemptId: string) {
-     this.http.get<any>(`http://localhost:3000/api/progress/attempt/${attemptId}/feedback`, { withCredentials: true }).subscribe({
+     this.http.get<any>(`${environment.apiUrl}/progress/attempt/${attemptId}/feedback`, { withCredentials: true }).subscribe({
         next: (res) => {
             this.badgeFeedback.set(res);
         },
@@ -339,7 +340,7 @@ export class DashboardComponent implements OnInit {
   dispatchBadge(userId: string, userName: string) {
      const badgeName = prompt(`You are directly dispensing a Badge to ${userName}!\n\nEnter Badge Name (e.g. "React Master"):`);
      if (badgeName && badgeName.trim().length > 0) {
-        this.http.post<any>('http://localhost:3000/api/architect/assign-badge', { user_id: userId, badge_name: badgeName }, { withCredentials: true })
+        this.http.post<any>(`${environment.apiUrl}/architect/assign-badge`, { user_id: userId, badge_name: badgeName }, { withCredentials: true })
         .subscribe({
            next: () => alert(`FCM Notification Fired! Badge '${badgeName}' securely mounted to ${userName}!`),
            error: (err) => alert('Failed to dispense structural badge: ' + err.message)
